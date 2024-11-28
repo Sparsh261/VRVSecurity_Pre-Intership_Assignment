@@ -15,4 +15,10 @@ usersRouter.route('/login')
 usersRouter.route('/access')
 .post(usersController.verifyAccessUsers)
 
+usersRouter.route('/getvalues')
+.get(usersController.getValues)
+
+usersRouter.route('/incrementvalues')
+.post(usersController.incrementValues)
+
 module.exports = usersRouter

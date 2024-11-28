@@ -15,7 +15,7 @@ const usersSchema = mongoose.Schema({
         required: true,
         unique: true
     },
-    position: {
+    role: {
         type: String,
         required: true,
     },
