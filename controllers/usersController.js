@@ -13,7 +13,6 @@ const getAllUsers = async (req, res) => {
 const addUsers = async (req, res) => {
     
     const { name, email, password, role } = req.body;
-
     const tempUser = await usersModel.findOne({ email });
 
     try {
@@ -23,9 +22,7 @@ const addUsers = async (req, res) => {
                 msg: "User Exists"
             })
         }
-
         else {
-
             const salt = await bcrypt.genSalt(10);
             const secretPassword = await bcrypt.hash(password, salt);
 
@@ -35,7 +32,7 @@ const addUsers = async (req, res) => {
                 }
             }
             const authToken = jwt.sign(data, jwtSecretKey);
-
+            
             try {
                 await usersModel.create({
                     name: name,
@@ -56,9 +53,7 @@ const addUsers = async (req, res) => {
                 })
             }
         }
-
     }
-
     catch (err) {
 
         req.json({
@@ -76,28 +71,28 @@ const verifyUsers = async (req, res) => {
         if (!user) {
             res.json({
                 status: "failed",
-                msg: "No Account Found"
+                msg: "No Account Found"           //  No user found
             })
         }
         else if(role != user.role){
             res.json({
                 status: "failed",
-                msg: "You are not "+role+"."
+                msg: "You are not "+role+"."        //  Role is different
             })
         }
         else {
-            const chkPass = await bcrypt.compare(password, user.password);
 
+            const chkPass = await bcrypt.compare(password, user.password);
             if (chkPass) {
                 res.json({
                     status: "success",
-                    authToken: user.authToken
+                    authToken: user.authToken          //  Password matched
                 })
             }
             else {
                 res.json({
                     status: "failed",
-                    msg: "Invalid Credentials"
+                    msg: "Invalid Credentials"          //  Password not matched
                 })
             }
         }
@@ -115,12 +110,11 @@ const verifyAccessUsers = async (req, res) => {
     const { authToken } = req.body;
     const user = await usersModel.findOne({ authToken });
     const role = user.role;
-    console.log(role)
     try {
-                res.json({
-                    status: "success",
-                    role: role
-                })
+        res.json({
+            status: "success",
+            role: role
+        })
     }
     catch (err) {
         req.json({
@@ -132,12 +126,10 @@ const verifyAccessUsers = async (req, res) => {
 
 
 
-const getValues = async (req, res) => {
+const getValues = async (req, res) => {         // To send values to frontend
 
     const fsPromises = require('fs/promises');
-    
     const db = await fsPromises.readFile('controllerValues.json','utf-8');
-
     const arr = JSON.parse(db);
 
     try {
@@ -156,7 +148,7 @@ const getValues = async (req, res) => {
 }
 
 
-const incrementValues = async (req, res) => {
+const incrementValues = async (req, res) => {           // To increment values
 
     const fsPromises = require('fs/promises');
     const { adminCount, moderatorCount, userCount } = req.body;
