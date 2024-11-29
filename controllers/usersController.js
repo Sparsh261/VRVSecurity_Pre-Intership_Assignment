@@ -6,8 +6,9 @@ require('dotenv').config()
 const jwtSecretKey = process.env.jwtSecretKey;
 
 const getAllUsers = async (req, res) => {
-    const allUsers = await usersModel.find();
-    res.send(allUsers)
+    res.send({
+        status:"success"
+    })
 }
 
 const addUsers = async (req, res) => {
